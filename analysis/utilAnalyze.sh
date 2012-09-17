@@ -14,7 +14,7 @@ source ../env.sh
 # See the License for the specific language governing permissions and
 # limitations under the License. See accompanying LICENSE file.
 
-f="\([0-9\.]\+\)"
+f="\([0-9\.][0-9\.]*\)"
 numfile=/tmp/${USER}.num
 afile=/tmp/${USER}.a
 swpfile=/tmp/${USER}.swp

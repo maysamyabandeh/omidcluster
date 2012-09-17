@@ -24,7 +24,7 @@ RESULTS="$BASE/../results/"
 #operationpattern=".*operations; ${f} .*"
 
 #crcimbo-30m-readonly-256t-7 => crcimbo-30m-readonly-256t
-EXPRS=`ls $RESULTS | sed "s/\(.*\)-[0-9]\+/\1/" | tr " " "\n" | uniq`
+EXPRS=`ls $RESULTS | sed "s/\(.*\)-[0-9][0-9]*/\1/" | tr " " "\n" | uniq`
 cnt=0
 total=`echo $EXPRS | wc -w`
 echo -n "Progress: " 
@@ -34,7 +34,7 @@ rm *.txt
 for expr in $EXPRS; do 
 	dir=`basename $expr`
 	#crcimbo-30m-readonly-256t-7
-	dirpattern="\(.*\)-\([0-9\.m]\+\)-\(.*\)-\([0-9]\+\)t"
+	dirpattern="\(.*\)-\([0-9\.m]*\)-\(.*\)-\([0-9]*\)t"
 	system=`echo $dir | sed "s/${dirpattern}/\1/"`
 	size=`echo $dir | sed "s/${dirpattern}/\2/"`
 	workload=`echo $dir | sed "s/${dirpattern}/\3/"`
