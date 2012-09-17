@@ -2,6 +2,9 @@
 
 echo This will initialize the folder. Enter to continue; read
 
+echo Have you updated the env.sh file?
+echo OK?; read
+
 # update BASE, JAVA_HOME in env.sh, and perhaps other variables
 source env.sh; echo Is this your BASE ? $BASE
 echo OK?; read
@@ -28,10 +31,10 @@ echo OK?; read
 # update the config files
 cp backupconf/hdfs/conf/hadoop-env.sh hdfs/conf/hadoop-env.sh
 cp backupconf/hdfs/conf/hdfs-site.xml hdfs/conf/hdfs-site.xml
-cp backupconf/hbase/conf/hbase-env.xml hbase/conf/hbase-env.xml
+cp backupconf/hbase/conf/hbase-env.sh hbase/conf/hbase-env.sh
 cp backupconf/hbase/conf/hbase-site.xml hbase/conf/hbase-site.xml
 cd hbase/conf
-ln -s ../../hdfs/conf/slaves regionservers
+ln -sf ../../hdfs/conf/slaves regionservers
 cd -
 bin/preparehbase.sh
 echo OK?; read
@@ -39,9 +42,14 @@ echo OK?; read
 # download the modified YCSB to benchmarks folder
 cd benchmarks
 git clone git://github.com/maysamyabandeh/YCSB.git
-cd -
+cd YCSB
+git checkout txnycsb
+cd ../..
 ls -d benchmarks/YCSB
 echo OK?; read
+
+# create lib link
+source bin/util.sh; linkapp crcimbo
 
 # compile YCSB
 cd benchmarks/YCSB
@@ -55,6 +63,8 @@ echo OK?; read
 
 # start the cluster
 ./bin/do.sh start-cluster crcimbo
+source env.sh; echo hdfs web access: http://$HDFSMASTER:52070/dfshealth.jsp
+source env.sh; echo hbase web access: http://$HDFSMASTER:52070/dfshealth.jsp
 echo OK?; read
 
 # load some initial data

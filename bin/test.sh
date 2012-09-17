@@ -40,12 +40,13 @@ for e in mixed; do
         analyzedHeader=`cat analyzedHeader.txt`
         cd -
         mail -s "Finished $d $e with $threads clients" -b "$EMAIL" "$EMAIL" << EOF
-        You can check the results at $outdir/
-        $analyzedHeader
-        $analyzed
-        EOF
+You can check the results at $outdir/
+$analyzedHeader
+$analyzed
+EOF
 
       done
     done
   done
 done
+

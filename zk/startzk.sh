@@ -16,7 +16,7 @@
 
 source `dirname $0`/../env.sh
 CONF=`dirname $0`/zoo-standalone.cfg
-sed -e "/dataDir=.*/d" -i ' ' $CONF
+sed -e "/dataDir=.*/d" -i '.origin' $CONF
 echo "dataDir=$ZKDATADIR" >> $CONF
 rm -rf $ZKDATADIR
 
