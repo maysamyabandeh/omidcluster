@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+ <property>
+  <name>fs.default.name</name>
+  <value>hdfs://wilbur3:8121</value>
+ </property>
+
+ <property>
+  <name>dfs.http.address</name>
+  <value>wilbur3:52070</value>
+ </property>
+
+ <property>
+  <name>dfs.secondary.http.address</name>
+  <value>wilbur3:52060</value>
+ </property>
+
+ <property>
+  <name>dfs.datanode.http.address</name>
+  <value>0.0.0.0:52075</value>
+ </property>
+
+ <property>
+  <name>dfs.datanode.address</name>
+  <value>0.0.0.0:52010</value>
+ </property>
+
+ <property>
+  <name>dfs.datanode.ipc.address</name>
+  <value>0.0.0.0:52020</value>
+ </property>
+
+ <property>
+  <name>dfs.name.dir</name>
+  <value>/home/maysam/hdfsdir/name</value>
+ </property>
+
+ <property>
+  <name>dfs.data.dir</name>
+  <value>/home/maysam/hdfsdir/data</value>
+ </property>
+ <property>
+  <name>dfs.datanode.max.xcievers</name>
+  <value>4096</value>
+ </property>
+ <property>
+  <name>dfs.datanode.handler.count</name>
+  <value>10</value>
+ </property>
+</configuration>
