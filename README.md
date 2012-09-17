@@ -8,7 +8,9 @@ The purpose is to make it easier for the researchers to run Omid against YCSB (o
 Contributors
 ------------
 Daniel Gomez Ferro
+
 Ivan Kelly
+
 Maysam Yabandeh
 
 

@@ -39,7 +39,7 @@ export HBASEMASTER=localhost
 export HDFSMASTER=localhost
 #export HDFSDIR="/d1/$user/hdfsdir /home/$user/hdfsdir"
 export HDFSDIR="$HOME/hdfsdir"
-export SHORTSIZE=300000
+export SHORTSIZE=30000
 export TABLE="benchmark${SHORTSIZE}"
 export TABLESIZE=`echo $SHORTSIZE | sed "s/m/000000/"`
 #number of status oracles

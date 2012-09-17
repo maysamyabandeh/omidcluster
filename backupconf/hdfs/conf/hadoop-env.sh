@@ -4,7 +4,6 @@
 # optional.  When running a distributed configuration it is best to
 # set JAVA_HOME in this file, so that it is correctly defined on
 # remote nodes.
-source ${HADOOP_HOME}/../env.sh
 
 # The java implementation to use.  Required.
 # export JAVA_HOME=/usr/lib/j2sdk1.5-sun
@@ -33,7 +32,7 @@ export HADOOP_JOBTRACKER_OPTS="-Dcom.sun.management.jmxremote $HADOOP_JOBTRACKER
 
 # Where log files are stored.  $HADOOP_HOME/logs by default.
 # export HADOOP_LOG_DIR=${HADOOP_HOME}/logs
-export HADOOP_LOG_DIR=$LOGBASE/hadoop_logs
+export HADOOP_LOG_DIR=~/hadoop_logs
 
 # File naming remote slave hosts.  $HADOOP_HOME/conf/slaves by default.
 # export HADOOP_SLAVES=${HADOOP_HOME}/conf/slaves

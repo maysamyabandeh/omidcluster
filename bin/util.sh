@@ -17,6 +17,7 @@ source env.sh
 cd $BASE
 
 run_tso_only() {
+    linkapp $*
     #$BASE/start-zk.sh
     $BASE/bin/start-bk.sh
     sleep 5
@@ -63,6 +64,7 @@ run_sim_clients() {
 
 #ulimit -u 8192
 start_cluster() {
+    linkapp $*
     $BASE/bin/start-zk.sh
     $BASE/bin/start-bk.sh
     sleep 5
@@ -75,6 +77,23 @@ start_cluster() {
 	 for i in $HDFSMASTER `cat machines.txt` `cat $BASE/hdfs/conf/slaves` $SEQSERVER $TSOSERVERS; do
         ssh $i $BASE/bin/collect_statistics.sh
     done
+}
+
+#link to the lib directory of the app
+linkapp() {
+  srcdir=$1
+  echo "USING $1"
+  if [ "$1" = "hbase" ]; then
+    #I just need a working lib directory for hbase and hdfs
+    srcdir="crcimbo"
+  fi
+  if [ ! -d "$BASE/$srcdir" ]; then
+    echo "Error: Unknown application: $srcdir"
+    exit 1
+  fi
+  for i in $ZKSERVER $BKSERVERS $TSOSERVERS $SEQSERVER $HDFSMASTER $HBASEMASTER `cat $BASE/hdfs/conf/slaves` `cat $BASE/machines.txt`; do 
+    ssh $i "ln -s -f $BASE/$srcdir/lib $BASE/lib ; if [[ ! -d $STATS ]]; then mkdir $STATS; fi"
+  done
 }
 
 start_tso() {
@@ -108,9 +127,6 @@ start_tso() {
 	echo sleeping
 	sleep 3
 
-	for i in $ZKSERVER $BKSERVERS $TSOSERVERS $SEQSERVER $HDFSMASTER $HBASEMASTER `cat $BASE/hdfs/conf/slaves` `cat $BASE/machines.txt`; do 
-		ssh $i "ln -s -f $BASE/$srcdir/lib $BASE/lib ; if [[ ! -d $STATS ]]; then mkdir $STATS; fi"
-	done
 	for i in `cat machines.txt`; do 
 		ssh $i ln -s -f $BASE/$srcdir/conf/omid-site.xml $BASE/benchmarks/YCSB/db/tranHbase/conf
 	done
