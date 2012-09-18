@@ -18,8 +18,18 @@ Architecture
 ------------
 
 
-Compilation
+Configure
 -----------
+   * Update BASE and JAVA_HOME in env.sh
+
+   * Read bin/init.sh which tells you what you need to do to run a test. If you are comfortable with the current
+status, simply run it and it will walk you through the changes.
+
+   * The scrip run a test on localhost, you can then configure it for your own cluster
+
+   * Update env.sh, machines.txt, hdfs/conf/slaves
+
+   * run bin/preparehbase.sh to propagate the changes into other conf files
 
 
 Running

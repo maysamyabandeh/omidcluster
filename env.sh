@@ -27,6 +27,7 @@ export YCSB=$BASE/benchmarks/YCSB
 export ZKSERVER=localhost
 export ZKSERVERLIST=localhost:2223
 export ZKDATADIR=$HOME/zookeeper/
+#export BKSERVERLIST=server1:server2
 export BKSERVERLIST=localhost
 export BKSERVERS=`echo $BKSERVERLIST | sed "s/:/ /"`;
 export BKPARAM1=1
