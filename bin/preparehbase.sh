@@ -20,7 +20,7 @@ source env.sh
 
 l=`grep -n "name.*zk" ./crcimbo/conf/omid-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ZKSERVERLIST}\2/" -i '' ./crcimbo/conf/omid-site.xml
+	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ZKSERVERLIST}\2/" -i.origin ./crcimbo/conf/omid-site.xml
 fi
 
 hadoopjar=$BASE/hbase/lib/hadoop-core*jar
@@ -31,44 +31,44 @@ echo $HDFSMASTER > $BASE/hdfs/conf/masters
 
 l=`grep -n "fs.default.name" hdfs/conf/hdfs-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>hdfs:..\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i '' hdfs/conf/hdfs-site.xml
+	sed -e "${l}s/\(<value>hdfs:..\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i.origin hdfs/conf/hdfs-site.xml
 fi
 l=`grep -n "dfs.http.address" hdfs/conf/hdfs-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i '' hdfs/conf/hdfs-site.xml
+	sed -e "${l}s/\(<value>\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i.origin hdfs/conf/hdfs-site.xml
 fi
 l=`grep -n "dfs.secondary.http.address" hdfs/conf/hdfs-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i '' hdfs/conf/hdfs-site.xml
+	sed -e "${l}s/\(<value>\).*\(:[0-9][0-9]*<.value>\)/\1$HDFSMASTER\2/" -i.origin hdfs/conf/hdfs-site.xml
 fi
 #replace space with , and append name, and then replace \ to feed to sed
 ALLHDFSDIRS=`echo $HDFSDIR | sed 's/ /\/name,/g' | sed 's/$/\/name/g' | sed 's/\//\\\\\//g'`
 l=`grep -n "dfs.name.dir" hdfs/conf/hdfs-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ALLHDFSDIRS}\2/" -i '' hdfs/conf/hdfs-site.xml
+	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ALLHDFSDIRS}\2/" -i.origin hdfs/conf/hdfs-site.xml
 fi
 #replace space with , and append data, and then replace \ to feed to sed
 ALLHDFSDIRS=`echo $HDFSDIR | sed 's/ /\/data,/g' | sed 's/$/\/data/g' | sed 's/\//\\\\\//g'`
 l=`grep -n "dfs.data.dir" hdfs/conf/hdfs-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ALLHDFSDIRS}\2/" -i '' hdfs/conf/hdfs-site.xml
+	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ALLHDFSDIRS}\2/" -i.origin hdfs/conf/hdfs-site.xml
 fi
 
 l=`grep -n "fs.default.name" ./hdfs/conf/core-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>hdfs:..\).*\(:.*<.value>\)/\1${HDFSMASTER}\2/" -i '' ./hdfs/conf/core-site.xml
+	sed -e "${l}s/\(<value>hdfs:..\).*\(:.*<.value>\)/\1${HDFSMASTER}\2/" -i.origin ./hdfs/conf/core-site.xml
 fi
 
 l=`grep -n "tso.host" ./hbase/conf/hbase-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${TSOSERVER0}\2/" -i '' ./hbase/conf/hbase-site.xml
+	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${TSOSERVER0}\2/" -i.origin ./hbase/conf/hbase-site.xml
 fi
 l=`grep -n "hbase.rootdir" ./hbase/conf/hbase-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>hdfs:..\).*\(:.*<.value>\)/\1${HDFSMASTER}\2/" -i '' ./hbase/conf/hbase-site.xml
+	sed -e "${l}s/\(<value>hdfs:..\).*\(:.*<.value>\)/\1${HDFSMASTER}\2/" -i.origin ./hbase/conf/hbase-site.xml
 fi
 l=`grep -n "hbase.zookeeper.quorum" ./hbase/conf/hbase-site.xml -A2 | grep value | head -1 | cut -d- -f1`
 if [[ ! -z $l ]]; then
-	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ZKSERVER}\2/" -i '' ./hbase/conf/hbase-site.xml
+	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ZKSERVER}\2/" -i.origin ./hbase/conf/hbase-site.xml
 fi
 

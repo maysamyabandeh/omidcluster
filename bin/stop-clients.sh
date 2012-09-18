@@ -22,7 +22,9 @@ sleep 1
 
 killpid=
 for machine in `cat machines.txt`; do
-	ssh $machine "pkill -9 -f -u $user '^[^ ]*java.*com.yahoo.ycsb.Client'" &
+	#ssh $machine "pkill -9 -f -u $user '^[^ ]*java.*com.yahoo.ycsb.Client'" &
+	#sometimes the cmdline is too long and the above command does not work
+	ssh $machine 'kill -9 `jps | grep Client | cut -d" " -f1`'
 done
 echo waiting for pkills in $0 ...
 wait $killpid
