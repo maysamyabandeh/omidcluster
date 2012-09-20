@@ -92,7 +92,7 @@ linkapp() {
     exit 1
   fi
   for i in $ZKSERVER $BKSERVERS $TSOSERVERS $SEQSERVER $HDFSMASTER $HBASEMASTER `cat $BASE/hdfs/conf/slaves` `cat $BASE/machines.txt`; do 
-    ssh $i "ln -s -f $BASE/$srcdir/lib $BASE/lib ; if [[ ! -d $STATS ]]; then mkdir $STATS; fi"
+    ssh $i "cp $BASE/$srcdir/target/omid*jar $BASE/$srcdir/lib/;  unlink $BASE/lib; ln -s -f $BASE/$srcdir/lib $BASE/lib ; if [[ ! -d $STATS ]]; then mkdir $STATS; fi"
   done
 }
 

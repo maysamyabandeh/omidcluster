@@ -23,8 +23,12 @@ if [[ ! -z $l ]]; then
 	sed -e "${l}s/\(<value>\).*\(<.value>\)/\1${ZKSERVERLIST}\2/" -i.origin ./crcimbo/conf/omid-site.xml
 fi
 
+hadoopjar=$BASE/hdfs/hadoop-core*jar
+echo The is your hdfs hadoop jar file: $hadoopjar
 hadoopjar=$BASE/hbase/lib/hadoop-core*jar
 echo The is your hbase hadoop jar file: $hadoopjar
+hadoopjar=$BASE/lib/hadoop-core*jar
+echo The is your omid hadoop jar file: $hadoopjar
 echo make sure it matches the ones that hdfs uses
 
 echo $HDFSMASTER > $BASE/hdfs/conf/masters

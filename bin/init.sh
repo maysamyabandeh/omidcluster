@@ -29,7 +29,18 @@ ls -d $JAVA_HOME
 source env.sh; echo Is this your JAVA_HOME ? $JAVA_HOME
 echo OK?; read
 
-# copy the omid directory here, the default name in scripts is crcimbo
+# make a copy of the omid directory here, the default name in scripts is crcimbo
+# you make multiple copies and change the scripts accordingly
+if [ -d crcimbo ]; then
+  echo crcimbo already exists -> skipped
+else
+  git clone git://github.com/maysamyabandeh/omid.git
+  mv omid crcimbo
+  cd crcimbo
+  git checkout megaOmid
+  mvn package -DskipTests
+  cd ..
+fi
 ls -d crcimbo
 echo OK?; read
 
@@ -103,7 +114,7 @@ echo OK?; read
 
 # analyze the results
 cd analysis/
-analyze.sh
+./analyze.sh
 cat *.txt
 cd -
 
