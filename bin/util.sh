@@ -18,16 +18,27 @@ cd $BASE
 
 run_tso_only() {
     linkapp $*
-    #$BASE/start-zk.sh
+    $BASE/bin/start-zk.sh
     $BASE/bin/start-bk.sh
     sleep 5
     start_tso $*
 	 echo "sleep 5s to initialize the heap"
 	 sleep 5;
-	 run_sim_clients $*
+
+	 for i in $HDFSMASTER `cat machines.txt` `cat $BASE/hdfs/conf/slaves` $SEQSERVER $TSOSERVERS; do
+        ssh $i $BASE/bin/collect_statistics.sh
+    done
 }
 
 run_sim_clients() {
+	if [ $# -lt 5 ]; then
+		echo "parameters <outdir> <type> <threads> <buffersize> <rows> <pause?>"
+		exit 1;
+	fi
+
+	outdir=$1
+	shift
+
 	app=$1
 	NumClient=$2; 
 	NMSGS=$3
@@ -37,14 +48,16 @@ run_sim_clients() {
 		PAUSE_CLIENT="true"
 	fi
 	echo "Run clients $*"
-	echo "Killing old processes ..."
-	./bin/stop-clients.sh
+
+	killall kill_switch.sh
+	./bin/kill_switch.sh $BENCHTIME $outdir &
 
 	#split the client processes among the machines
 	nmachines=`wc -l machines.txt | cut -f 1 -d ' '`;
 	each=$((NumClient / nmachines))
 	remainder=$((NumClient % nmachines))
 
+	BPROC=
 	for machine in `cat machines.txt`;
 	do
 		if [ $remainder -gt 0 ]; then 
@@ -58,8 +71,17 @@ run_sim_clients() {
 			break
 		fi
 		echo Running $runs Client\(s\) on $machine
-		ssh -f $machine "$BASE/$app/bin/omid.sh simclients $machine $NMSGS $runs $MAX_ROWS $PAUSE_CLIENT " &
+		ssh -f $machine "$BASE/$app/bin/omid.sh simclients $machine $NMSGS $runs $MAX_ROWS $PAUSE_CLIENT "
+		BPROC="$BPROC $!"
 	done
+	wait $BPROC
+	pgrep kill_switch.sh; switchfinished=$?;
+	if [[ $switchfinished -ne 1 ]]; then
+		echo WARN kill_switch.sh is not finished!
+		killall kill_switch.sh
+		#if we force killing kill_switch.sh, perhasp the collect_statistics is not finished, so do it
+		collect_statistics $outdir
+	fi
 }
 
 #ulimit -u 8192

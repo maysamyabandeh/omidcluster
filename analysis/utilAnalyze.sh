@@ -141,7 +141,7 @@ analyzeTSO() {
 
 
 	echo $TPS $GTPS $ABORT $GABORT $FLUSH $WRITE $NFLUSHES $NEMPTY_FLUSHES $NEMPTY_OVER_TOTAL_FLUSHES
-	echo TPS GTPS ABORT GABORT FLUSH WRITE NFLUSHES NEMPTY_FLUSHES NEMPTY_OVER_TOTAL_FLUSHES > analyzedHeader.txt
+	echo "TPS GTPS ABORT GABORT FLUSH WRITE NFLUSHES NEMPTY_FLUSHES NEMPTY_OVER_TOTAL_FLUSHES " | sed 's/ / var /g' > tsoHeader.txt
 
 }
 
@@ -211,11 +211,12 @@ avgsar() {
 	OUT="$OUT `./averager.sh $NWOF`"
 	OUT="$OUT `./averager.sh $NROF`"
 	OUT="$OUT `./averager.sh $NWBF`"
-	OUT="$OUT `./averager.sh $RPKF`"
-	OUT="$OUT `./averager.sh $WPKF`"
 	OUT="$OUT `./averager.sh $NRBF`"
+	OUT="$OUT `./averager.sh $WPKF`"
+	OUT="$OUT `./averager.sh $RPKF`"
 	OUT="$OUT `./averager.sh $SDAF`"
 	echo $OUT
+	echo "CPUF WOF ROF WBF RBF NWOF NROF NWBF NRBF WPKF RPKF SDAF " | sed 's/ / var /g' > sarHeader.txt
 }
 
 #analyze the sar files of an experiment

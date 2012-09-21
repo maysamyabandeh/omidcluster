@@ -33,26 +33,44 @@ tput sc
 rm *.txt
 for expr in $EXPRS; do 
 	dir=`basename $expr`
-	#crcimbo-30m-readonly-256t-7
-	dirpattern="\(.*\)-\([0-9\.m]*\)-\(.*\)-\([0-9]*\)t"
-	system=`echo $dir | sed "s/${dirpattern}/\1/"`
-	size=`echo $dir | sed "s/${dirpattern}/\2/"`
-	workload=`echo $dir | sed "s/${dirpattern}/\3/"`
-	clients=`echo $dir | sed "s/${dirpattern}/\4/"`
-	OUTPUT="${system}.${workload}.txt"
+	if [ ${dir:0:3} = "sim" ]; then #it is the expr with sim clients 
+		sim=1
+	else
+		sim=0
+	fi
 
-	# [MULTIREAD AverageLatency(ms)=92.07]
-	latencypattern="^\[.*\=${f}].*"
+	if [ $sim -eq 0 ]; then
+		#crcimbo-30m-readonly-256t-7
+		dirpattern="\(.*\)-\([0-9\.m]*\)-\(.*\)-\([0-9]*\)t"
+		system=`echo $dir | sed "s/${dirpattern}/\1/"`
+		size=`echo $dir | sed "s/${dirpattern}/\2/"`
+		workload=`echo $dir | sed "s/${dirpattern}/\3/"`
+		clients=`echo $dir | sed "s/${dirpattern}/\4/"`
+		OUTPUT="${system}.${workload}.txt"
+		# [MULTIREAD AverageLatency(ms)=92.07]
+		latencypattern="^\[.*\=${f}].*"
+	else
+		#sim-crcimbo-1b-1r-1t
+		dirpattern="sim-\(.*\)-\([0-9]*\)b-\([0-9]*\)r-\([0-9]*\)t"
+		system=`echo $dir | sed "s/${dirpattern}/\1/"`
+		bufsize=`echo $dir | sed "s/${dirpattern}/\2/"`
+		rows=`echo $dir | sed "s/${dirpattern}/\3/"`
+		clients=`echo $dir | sed "s/${dirpattern}/\4/"`
+		OUTPUT="${system}-${bufsize}-$rows.txt"
+		# LATENCYAvg 40789.734
+		latencypattern=".* LATENCYAvg ${f} .*"
+	fi
+
 	rm -f $numfile
 	clientlogs=`ls $RESULTS/$expr-*/*/*A`
 	for file in $clientlogs; do
-		grep --text $latencypattern $file > $xchgfile
+		grep --text "$latencypattern" $file > $xchgfile
 		pickRegion $xchgfile
 		cat $xchgfile | sed "s/${latencypattern}/\1/" >> $numfile
 		echo -n .
 	done
 	LAT=`./averager.sh $numfile`
-
+	echo "LAT var " > latHeader.txt
 
 	tsodir="$RESULTS/$expr"
 	tsos="${tsodir}-*/*/tso*.log"
@@ -73,6 +91,8 @@ for expr in $EXPRS; do
 	echo -n $percent%
 done
 echo
+
+	echo "Cli# `head -1 latHeader.txt``head -1 tsoHeader.txt``head -1 sarHeader.txt`" > header.txt
 
 for i in *.txt; do
 	sort -n $i -o $i
