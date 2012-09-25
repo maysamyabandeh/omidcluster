@@ -49,11 +49,11 @@ run_sim_clients() {
 	fi
 	echo "Run clients $*"
 
-	killall kill_switch.sh
+	killall -u $USER kill_switch.sh
 	./bin/kill_switch.sh $BENCHTIME $outdir &
 
 	#split the client processes among the machines
-	nmachines=`wc -l machines.txt | cut -f 1 -d ' '`;
+	nmachines=`cat machines.txt | wc -l`;
 	each=$((NumClient / nmachines))
 	remainder=$((NumClient % nmachines))
 
