@@ -78,7 +78,7 @@
  </property>
  <property>
   <name>hbase.zookeeper.property.clientPort</name>
-  <value>2223</value>
+  <value>2181</value>
  </property>
  <!-- property>
   <name>hbase.regionserver.thread.splitcompactcheckfrequency</name>
@@ -109,7 +109,7 @@
 
  <property>
   <name>hbase.zookeeper.clientPort</name>
-  <value>2223</value>
+  <value>2181</value>
  </property>
 
  <property>

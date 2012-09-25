@@ -27,8 +27,8 @@ $ZKCLI -server $ZKSERVERLIST create /ledgers/available b ;
 
 until [[ $BKSERVER = $BKSERVERLIST ]]
 do
-	BKSERVER=${BKSERVERLIST%%:*}
-	BKSERVERLIST=${BKSERVERLIST#*:}
-	ssh -f $BKSERVER "$BOOKIE" ;
+  BKSERVER=${BKSERVERLIST%%:*}
+  BKSERVERLIST=${BKSERVERLIST#*:}
+  ssh -f $BKSERVER "$BOOKIE" ;
 done
 

@@ -25,7 +25,7 @@ export JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Hom
 
 export YCSB=$BASE/benchmarks/YCSB
 export ZKSERVER=localhost
-export ZKSERVERLIST=localhost:2223
+export ZKSERVERLIST=localhost:2181
 export ZKDATADIR=$HOME/zookeeper/
 #export BKSERVERLIST=server1:server2
 export BKSERVERLIST=localhost

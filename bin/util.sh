@@ -18,8 +18,15 @@ cd $BASE
 
 run_tso_only() {
     linkapp $*
-    $BASE/bin/start-zk.sh
-    $BASE/bin/start-bk.sh
+    if [ "$BKSERVERLIST" = "*:*" ]; then #>1 bk host
+      $BASE/bin/start-zk.sh
+      $BASE/bin/start-bk.sh
+    else # 1 bk host only
+      #run a local bk-zk on the default port of 2181
+      $BASE/$1/bin/omid.sh bktest &> $STATS/bk.log &
+      #the zk start fails since it uses the same bort as bk-zk but it is ok
+      $BASE/bin/start-zk.sh 
+    fi
     sleep 5
     start_tso $*
 	 echo "sleep 5s to initialize the heap"
@@ -87,8 +94,15 @@ run_sim_clients() {
 #ulimit -u 8192
 start_cluster() {
     linkapp $*
-    $BASE/bin/start-zk.sh
-    $BASE/bin/start-bk.sh
+    if [ "$BKSERVERLIST" = "*:*" ]; then #>1 bk host
+      $BASE/bin/start-zk.sh
+      $BASE/bin/start-bk.sh
+    else # 1 bk host only
+      #run a local bk-zk on the default port of 2181
+      $BASE/$1/bin/omid.sh bktest &> $STATS/bk.log &
+      #the zk start fails since it uses the same bort as bk-zk but it is ok
+      $BASE/bin/start-zk.sh 
+    fi
     sleep 5
     ssh -f $HDFSMASTER $BASE/hdfs/bin/start-dfs.sh
     sleep 15
@@ -180,7 +194,6 @@ stop_cluster() {
 	 $BASE/bin/stop-sos.sh
     $BASE/bin/stop-zk.sh
     $BASE/bin/stop-bk.sh
-    sleep 10
 	 #if hbase and hdfs are not stopped already, do it the hard way
     ssh -f $HDFSMASTER "pkill -u $user sar; pkill -u $user sadc; pkill -9 -u $user java;"
     ssh -f $HBASEMASTER "pkill -u $user sar; pkill -u $user sadc; pkill -9 -u $user java;"

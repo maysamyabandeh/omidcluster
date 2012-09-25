@@ -20,5 +20,5 @@ for j in $BASE/lib/*.jar; do
     CLASSPATH=$CLASSPATH:$j
 done
 
-java -cp $CLASSPATH -Dlogdir="$STATS" -Dlog4j.configuration=log4j.properties org.apache.bookkeeper.proto.BookieServer 12345 $ZKSERVER:2223 $BKDISK1 $BKDISK2
+java -cp $CLASSPATH -Dlogdir="$STATS" -Dlog4j.configuration=log4j.properties org.apache.bookkeeper.proto.BookieServer 12345 $ZKSERVERLIST $BKDISK1 $BKDISK2
 
