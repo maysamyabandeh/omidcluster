@@ -46,7 +46,7 @@ echo OK?; read
 
 # download hadoop-1.0.3
 if [ ! -d hadoop-1.0.3 ]; then
-wget http://www.us.apache.org/dist/hadoop/common/hadoop-1.0.3/hadoop-1.0.3.tar.gz
+wget http://archive.apache.org/dist/hadoop/core/hadoop-1.0.3/hadoop-1.0.3.tar.gz
 tar -xzf hadoop-1.0.3.tar.gz
 fi
 ls -l hdfs
@@ -54,7 +54,7 @@ echo OK?; read
 
 # download hbase-0.94.1
 if [ ! -d hbase-0.94.1 ]; then
-wget http://www.us.apache.org/dist/hbase/hbase-0.94.1/hbase-0.94.1.tar.gz
+wget http://archive.apache.org/dist/hbase/hbase-0.94.1/hbase-0.94.1.tar.gz
 tar -xzf hbase-0.94.1.tar.gz
 fi
 ls -l hbase
