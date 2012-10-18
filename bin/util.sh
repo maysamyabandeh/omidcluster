@@ -293,7 +293,7 @@ load_data_single() {
 	fi
 	THREADS=32
 
-	COUNTPARAM="-p recordcount=$AMOUNT -p insertcount=$COUNT -p insertorder=inorder"
+	COUNTPARAM="-p recordcount=$AMOUNT -p insertcount=$COUNT"
 
 	EXTRAARGS="-p columnfamily=transactionSupport"
 	if [ "$TYPE" = "hbase" ]; then
@@ -314,9 +314,8 @@ load_data_single() {
 	OUTPUT=$STATS/$TYPE.$TABLE.`hostname`.${THREADS}t.round$ROUND.txt
 	echo "Running load, output to $OUTPUT"
 	export YCSB_HEAP_SIZE=3072
-	#Added by Maysam Yabandeh
-	#To make the table tiny
-	EXTRAARGS="$EXTRAARGS -p fieldcount=1 -p fieldlength=1"
+   #MEGAOMIDARGS is provided by env.sh
+	EXTRAARGS="$EXTRAARGS $MEGAOMIDARGS"
 	CLASSPATH=$YCSB/db/hbase/conf
 	for j in $BASE/lib/*.jar; do
 		CLASSPATH=$CLASSPATH:$j
@@ -434,11 +433,12 @@ run_bench_single() {
 	echo "Running bench, output to $OUTPUT"
 	export YCSB_HEAP_SIZE=3072
 
-	EXTRAARGS="$EXTRAARGS -p partitions=$PARTITIONS -p fieldcount=1 -p fieldlength=1"
+   #MEGAOMIDARGS is provided by env.sh
+	EXTRAARGS="$EXTRAARGS $MEGAOMIDARGS $GLOBALARG -p partitions=$PARTITIONS"
 	for j in $BASE/lib/*.jar; do
 		CLASSPATH=$CLASSPATH:$j
 	done
 	export CLASSPATH
-	$YCSB/bin/ycsb.sh com.yahoo.ycsb.Client -p measurementtype=timeseries -p timeseries.granularity=1000 -p table=$TABLE -p operationcount=$COUNT -p recordcount=$REALNUMREC -p insertorder=inorder $GLOBALARG $EXTRAARGS -t -db $DRIVER -P $YCSB/workloads/workload_$SET -s -threads $THREADS -target 50000 &> $OUTPUT 
+	$YCSB/bin/ycsb.sh com.yahoo.ycsb.Client -p measurementtype=timeseries -p timeseries.granularity=1000 -p table=$TABLE -p operationcount=$COUNT -p recordcount=$REALNUMREC $EXTRAARGS -t -db $DRIVER -P $YCSB/workloads/workload_$SET -s -threads $THREADS -target 50000 &> $OUTPUT 
 }
 

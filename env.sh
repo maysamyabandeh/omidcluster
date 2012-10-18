@@ -63,3 +63,7 @@ for i in $(seq $firstso $lastso); do
 	TSOSERVERS="$TSOSERVERS ${!so}"
 done
 export TSOSERVERS
+#Added by Maysam Yabandeh
+#To make the table tiny and sequential
+#This should squeeze high perormance from HBase
+export MEGAOMIDARGS=" -p fieldcount=1 -p fieldlength=1 -p insertorder=inorder"
